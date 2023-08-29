@@ -1,3 +1,4 @@
+# {file} start
 # frozen_string_literal: true
 require_relative 'word'
 require_relative 'player'
@@ -82,3 +83,95 @@ end
 if __FILE__ == $0
   Game.new
 end
+# {file} end
+
+# {file} start
+# frozen_string_literal: true
+# get_guess: This method will be responsible for getting user input (a guessed letter).
+#
+# valid_guess?: This method will be responsible for checking if the input received is a valid guess
+# (for example, it could check if the input is a single letter that hasn't been guessed before).
+#
+# store_guess: This method will be responsible for storing the guess into @past_guesses if it's valid.
+
+class Player
+
+  def initialize
+
+  end
+
+  def get_guess
+    puts "Guess by inputting a single letter: "
+    guess = nil
+    while true
+      guess = gets.chomp
+      if valid_guess?(guess)
+        break
+      else
+        puts "Invalid input. Please enter a single letter: "
+        next
+      end
+    end
+    guess
+  end
+
+  def valid_guess?(guess)
+    guess.length == 1 && guess.match?(/^[a-zA-Z]$/)
+  end
+
+end
+
+# {file} end
+
+# {file} start
+require 'find'
+
+# Create progress subfolder if it doesn't exist
+Dir.mkdir("progress") unless File.exists?("progress")
+
+# Open or create a new file in 'progress' subfolder
+File.open("progress/progress.rb", 'w') do |output_file|
+
+  # Search for all Ruby files in the current directory
+  Dir.glob("**/*.rb").each do |file|
+
+    # Skip the output file itself
+    next if file == "progress/progress.rb"
+
+    # Read and append each file's content to output file
+    File.open(file, 'r') do |input_file|
+      output_file.write("# {file} start\n")
+      output_file.write(input_file.read)
+      output_file.write("\n# {file} end\n\n")
+    end
+  end
+end
+# {file} end
+
+# {file} start
+# frozen_string_literal: true
+
+class Word
+  attr_reader :current_word
+
+  def initialize
+    new_word
+  end
+
+  def new_word
+    @dictionary = File.readlines("words.txt").map(&:chomp)
+
+    while true
+      current_word = @dictionary.sample
+      if current_word.length.between?(5, 10)
+        @current_word = current_word
+        break
+      end
+    end
+    @current_word
+  end
+
+end
+
+# {file} end
+

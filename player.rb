@@ -7,10 +7,9 @@
 # store_guess: This method will be responsible for storing the guess into @past_guesses if it's valid.
 
 class Player
-  attr_reader :past_guesses
 
   def initialize
-    @past_guesses = []
+
   end
 
   def get_guess
@@ -19,7 +18,6 @@ class Player
     while true
       guess = gets.chomp
       if valid_guess?(guess)
-        @past_guesses << guess
         break
       else
         puts "Invalid input. Please enter a single letter: "
@@ -30,7 +28,7 @@ class Player
   end
 
   def valid_guess?(guess)
-    guess.length == 1 && guess.match?(/^[a-zA-Z]$/) && !@past_guesses.include?(guess)
+    guess.length == 1 && guess.match?(/^[a-zA-Z]$/)
   end
 
 end
